@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { Flex, AppShell, Burger, Paper, Button } from "@mantine/core";
 import { FaSun, FaMoon } from "react-icons/fa";
+import { useMantineColorScheme, useComputedColorScheme } from "@mantine/core";
+
 import Buttons from "./components/Buttons";
 import Text from "./components/Text";
-import { useState } from "react";
+
 import "./App.css";
 
 function App() {
@@ -12,6 +15,14 @@ function App() {
 
   const [opened, { toggle }] = useDisclosure();
   const [currentComponent, setCurrentComponent] = useState("component1");
+  const { setColorScheme } = useMantineColorScheme();
+  const computedColorScheme = useComputedColorScheme("light");
+
+  const toggleColorScheme = () => {
+    setColorScheme(computedColorScheme === "dark" ? "light" : "dark");
+  };
+
+  console.log(computedColorScheme);
 
   return (
     <>
@@ -37,8 +48,8 @@ function App() {
               size="sm"
             />
             <div>Quirky Mantine Tutorials</div>
-            <Button size="sm" value="link">
-              <FaMoon />
+            <Button size="sm" value="link" onClick={toggleColorScheme}>
+              {computedColorScheme === "dark" ? <FaMoon /> : <FaSun />}
             </Button>
           </Flex>
         </AppShell.Header>
@@ -56,9 +67,7 @@ function App() {
           {currentComponent === "component1" ? <Buttons /> : <Text />}
         </AppShell.Main>
 
-        <AppShell.Footer p='lg'>
-          ETO THE FOOTER
-        </AppShell.Footer>
+        <AppShell.Footer p="lg">ETO THE FOOTER</AppShell.Footer>
       </AppShell>
     </>
   );
